@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة المدرسة المستدامة | EcoSchool Swap</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+    
+    <!-- Header / Navbar -->
+    <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-white text-emerald-700 p-3 rounded-2xl shadow-md">
+                    <i class="fa-solid fa-leaf text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold leading-tight">المدرسة المستدامة</h1>
+                    <p class="text-xs text-emerald-100 hidden sm:block">تبادل الأدوات المدرسية • دعم المجتمع • حماية البيئة</p>
+                </div>
+            </div>
+
+            <button type="button" onclick="openModal()" class="relative z-50 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-5 rounded-xl transition duration-200 shadow-md hover:shadow-lg flex items-center gap-2 text-sm sm:text-base cursor-pointer">
+                <i class="fa-solid fa-plus pointer-events-none"></i>
+                <span class="pointer-events-none">إضافة أداة / طلب</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-8">
+
+        <!-- Banner Intro -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <span class="bg-emerald-500/40 text-emerald-100 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-300/30">مبادرة تكافل مجتمعي</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 leading-snug">معاً لتخفيف الأعباء وإعادة التدوير المدرسي</h2>
+                <p class="mt-2 text-emerald-100 text-sm sm:text-base">شارِك الأدوات الزائدة عن حاجتك، وساعد زملاءك في تغطية احتياجاتهم الدراسية بكل سهولة وشفافية.</p>
+            </div>
+            <i class="fa-solid fa-recycle text-emerald-500/20 text-9xl absolute left-4 -bottom-6 pointer-events-none"></i>
+        </div>
+
+        <!-- Dashboard / Math & Logic Stats -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Stat 1: Total Savings -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">التوفير المالي للمجتمع</p>
+                        <h3 id="total-savings" class="text-3xl font-extrabold text-emerald-600 mt-2">0 ج.م</h3>
+                    </div>
+                    <div class="bg-emerald-50 text-emerald-600 p-4 rounded-xl text-2xl">
+                        <i class="fa-solid fa-piggy-bank"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3"><i class="fa-solid fa-circle-info ml-1"></i>محسوب بناءً على متوسط أسعار السوق للأدوات المتبرع بها</p>
+            </div>
+
+            <!-- Stat 2: Total Items Available -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">إجمالي الأدوات المتوفرة</p>
+                        <h3 id="total-items" class="text-3xl font-extrabold text-slate-800 mt-2">0 أداة</h3>
+                    </div>
+                    <div class="bg-blue-50 text-blue-600 p-4 rounded-xl text-2xl">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3"><i class="fa-solid fa-circle-check ml-1 text-emerald-500"></i>كتب، حقائب، وأدوات هندسية جاهزة للتبادل</p>
+            </div>
+
+            <!-- Stat 3: Total Match Rate -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">نسبة تغطية الاحتياجات العامة</p>
+                        <h3 id="total-match-rate" class="text-3xl font-extrabold text-emerald-600 mt-2">0%</h3>
+                    </div>
+                    <div class="bg-amber-50 text-amber-600 p-4 rounded-xl text-2xl">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3"><i class="fa-solid fa-arrow-trend-up ml-1 text-emerald-500"></i>نسبة تلبية طلبات الطلاب عبر التبرعات</p>
+            </div>
+        </section>
+
+        <!-- Progress Bars by Grade Level -->
+        <section class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line text-emerald-600"></i>
+                    مؤشر مكتملات الاحتياجات حسب المرحلة الدراسية
+                </h3>
+                <span class="text-xs text-slate-400">تحديث لحظي</span>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Elementary Progress -->
+                <div>
+                    <div class="flex justify-between text-sm font-semibold mb-1.5">
+                        <span class="text-slate-700">المرحلة الابتدائية</span>
+                        <span id="label-primary" class="text-emerald-700">0% (0 / 0)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                        <div id="progress-primary" class="bg-emerald-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Middle School Progress -->
+                <div>
+                    <div class="flex justify-between text-sm font-semibold mb-1.5">
+                        <span class="text-slate-700">المرحلة الإعدادية</span>
+                        <span id="label-prep" class="text-emerald-700">0% (0 / 0)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                        <div id="progress-prep" class="bg-teal-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- High School Progress -->
+                <div>
+                    <div class="flex justify-between text-sm font-semibold mb-1.5">
+                        <span class="text-slate-700">المرحلة الثانوية</span>
+                        <span id="label-secondary" class="text-emerald-700">0% (0 / 0)</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                        <div id="progress-secondary" class="bg-blue-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search, Filter & Items Grid -->
+        <section class="space-y-6">
+            <!-- Filter Controls -->
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div class="w-full sm:w-72 relative">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="renderItems()" placeholder="بحث باسم الأداة..." class="w-full pr-10 pl-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                
+                <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                    <select id="filter-stage" onchange="renderItems()" class="py-2.5 px-3 rounded-xl border border-slate-200 text-sm bg-slate-50 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="all">جميع المراحل</option>
+                        <option value="primary">الابتدائية</option>
+                        <option value="prep">الإعدادية</option>
+                        <option value="secondary">الثانوية</option>
+                    </select>
+
+                    <select id="filter-category" onchange="renderItems()" class="py-2.5 px-3 rounded-xl border border-slate-200 text-sm bg-slate-50 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="all">جميع الفئات</option>
+                        <option value="books">كتب ودراسات</option>
+                        <option value="bags">حقائب مدرسية</option>
+                        <option value="tools">أدوات هندسية ورسم</option>
+                        <option value="stationery">أقلام ومستلزمات</option>
+                    </select>
+
+                    <select id="filter-type" onchange="renderItems()" class="py-2.5 px-3 rounded-xl border border-slate-200 text-sm bg-slate-50 font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="all">الكل (تبرعات وطلبات)</option>
+                        <option value="supply">الأدوات المتوفرة (تبرعات)</option>
+                        <option value="demand">الأدوات المطلوبة (احتياج)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Items Cards Grid -->
+            <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic Content Loaded via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Form for Adding Supply/Demand -->
+    <div id="add-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 relative max-h-[90vh] overflow-y-auto">
+            <button type="button" onclick="closeModal()" class="absolute left-6 top-6 text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-slate-800 border-b pb-3">تسجيل أداة جديدة / طلب مستلزمات</h3>
+
+            <form id="add-form" onsubmit="handleFormSubmit(event)" class="space-y-4 text-sm">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">نوع الإضافة</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="border rounded-xl p-3 flex items-center gap-2 cursor-pointer border-slate-200 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50">
+                            <input type="radio" name="itemType" value="supply" checked class="text-emerald-600 focus:ring-emerald-500">
+                            <span>متوفر للتبرع (عطاء)</span>
+                        </label>
+                        <label class="border rounded-xl p-3 flex items-center gap-2 cursor-pointer border-slate-200 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50">
+                            <input type="radio" name="itemType" value="demand" class="text-emerald-600 focus:ring-emerald-500">
+                            <span>مطلوب لحاجة (طلب)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">اسم الأداة / الكتاب</label>
+                    <input type="text" id="title" required placeholder="مثال: كتاب المعاصر رياضيات 2 إعدادي" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">المرحلة الدراسية</label>
+                        <select id="stage" required class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="primary">الابتدائية</option>
+                            <option value="prep">الإعدادية</option>
+                            <option value="secondary">الثانوية</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">فئة الأداة</label>
+                        <select id="category" required class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="books">كتب ودراسات</option>
+                            <option value="bags">حقائب مدرسية</option>
+                            <option value="tools">أدوات هندسية ورسم</option>
+                            <option value="stationery">أقلام ومستلزمات</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">السعر التقديري للسوق (ج.م)</label>
+                        <input type="number" id="price" min="0" required placeholder="مثال: 75" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-700 mb-1">الحالة التشغيلية</label>
+                        <select id="condition" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="جديد">ممتازة / شبه جديد</option>
+                            <option value="جيدة جداً">جيدة جداً</option>
+                            <option value="مقبولة">مقبولة ومستعملة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">بيانات التواصل (رقم الواتساب)</label>
+                    <input type="text" id="contact" required placeholder="مثال: 201000000000" class="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <!-- أزرار الإجراءات داخل النافذة (حفظ وإلغاء) -->
+                <div class="pt-3 grid grid-cols-2 gap-3">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-md cursor-pointer text-center">
+                        حفظ ونشر
+                    </button>
+                    <button type="button" onclick="closeModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition duration-200 text-center cursor-pointer">
+                        إلغاء الأمر
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-6 border-t border-slate-700 mt-12 text-center text-sm">
+        <p>منصة المدرسة المستدامة © 2026 • مبادرة خيرية لإعادة تدوير المستلزمات المدرسية</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // تحميل البيانات المحفوظة إن وجدت
+        let items = JSON.parse(localStorage.getItem('ecoschool_items')) || [];
+
+        // دالة فتح المودال مع ضمان عملها بالـ Global Scope
+        window.openModal = function() {
+            const modal = document.getElementById('add-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // دالة إغلاق المودال
+        window.closeModal = function() {
+            const modal = document.getElementById('add-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.getElementById('add-form').reset();
+            }
+        }
+
+        // دالة إزالة أو إلغاء أداة / طلب من النافذة الرئيسية
+        window.deleteItem = function(id) {
+            if (confirm('هل أنت تأكد من رغبتك في حذف وإلغاء هذا الطلب / الأداة نهائياً؟')) {
+                items = items.filter(item => item.id !== id);
+                localStorage.setItem('ecoschool_items', JSON.stringify(items));
+                renderItems();
+            }
+        }
+
+        // دالة تغيير حالة الطلب/الأداة إلى (نفذ / اكتمل)
+        window.toggleOutofStock = function(id) {
+            items = items.map(item => {
+                if (item.id === id) {
+                    return { ...item, isOutOfStock: !item.isOutOfStock };
+                }
+                return item;
+            });
+            localStorage.setItem('ecoschool_items', JSON.stringify(items));
+            renderItems();
+        }
+
+        // عرض العناصر وتحديث الإحصائيات
+        function renderItems() {
+            const grid = document.getElementById('items-grid');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const filterStage = document.getElementById('filter-stage').value;
+            const filterCat = document.getElementById('filter-category').value;
+            const filterType = document.getElementById('filter-type').value;
+
+            const filtered = items.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(search);
+                const matchesStage = filterStage === 'all' || item.stage === filterStage;
+                const matchesCat = filterCat === 'all' || item.category === filterCat;
+                const matchesType = filterType === 'all' || item.type === filterType;
+                return matchesSearch && matchesStage && matchesCat && matchesType;
+            });
+
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-slate-400">
+                        <i class="fa-regular fa-folder-open text-5xl mb-3"></i>
+                        <p class="font-bold">لا توجد أدوات مضافة حالياً. اضغط على "إضافة أداة / طلب" بالأعلى لبدء الإسهام!</p>
+                    </div>
+                `;
+            } else {
+                filtered.forEach(item => {
+                    const isSupply = item.type === 'supply';
+                    const isOutOfStock = !!item.isOutOfStock;
+                    const categoryMap = { books: 'كتب', bags: 'حقائب', tools: 'أدوات هندسية', stationery: 'مستلزمات' };
+                    const stageMap = { primary: 'ابتدائي', prep: 'إعدادي', secondary: 'ثانوي' };
+
+                    const cleanPhone = item.contact.replace(/\D/g, '');
+                    const messageText = encodeURIComponent(`مرحباً، أود الاستفسار بخصوص "${item.title}" المعروض على منصة المدرسة المستدامة.`);
+                    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${messageText}`;
+
+                    const card = document.createElement('div');
+                    
+                    // تنسيق كارت عادي أم منفذ
+                    const cardBorder = isOutOfStock 
+                        ? 'border-slate-300 bg-slate-50/80 opacity-80' 
+                        : (isSupply ? 'border-emerald-200 bg-white' : 'border-amber-200 bg-white');
+
+                    card.className = `${cardBorder} rounded-2xl border p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4 relative overflow-hidden`;
+                    
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-xs font-bold px-3 py-1 rounded-full ${isSupply ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}">
+                                        ${isSupply ? 'متوفر للتبرع' : 'طلب احتياج'}
+                                    </span>
+                                    ${isOutOfStock ? `
+                                        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 flex items-center gap-1">
+                                            <i class="fa-solid fa-ban"></i> نفذ / اكتمل
+                                        </span>
+                                    ` : ''}
+                                </div>
+                                <span class="text-xs font-semibold text-slate-500">${stageMap[item.stage]} • ${categoryMap[item.category]}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-base line-clamp-2 ${isOutOfStock ? 'line-through text-slate-500' : ''}">${item.title}</h4>
+                        </div>
+                        
+                        <div class="space-y-2 border-t border-slate-100 pt-3 text-xs text-slate-600">
+                            <div class="flex justify-between">
+                                <span>القيمة التقديرية:</span>
+                                <span class="font-bold text-slate-800">${item.price} ج.م</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>الحالة:</span>
+                                <span class="font-bold text-slate-800">${item.condition}</span>
+                            </div>
+                        </div>
+
+                        <!-- أزرار التحكم والإجراءات -->
+                        <div class="pt-2 flex flex-col gap-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-phone-flip ml-1"></i>${item.contact}</span>
+                                
+                                ${isOutOfStock ? `
+                                    <button disabled class="bg-slate-300 text-slate-500 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-not-allowed">
+                                        <i class="fa-solid fa-xmark"></i> غير متاح حالياً
+                                    </button>
+                                ` : `
+                                    <a href="${whatsappUrl}" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm">
+                                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                                        ${isSupply ? 'طلب الأداة (واتساب)' : 'المساهمة بالتبرع'}
+                                    </a>
+                                `}
+                            </div>
+
+                            <div class="flex items-center justify-between border-t border-slate-100 pt-2 text-xs">
+                                <button onclick="toggleOutofStock(${item.id})" class="text-slate-500 hover:text-amber-600 transition font-medium flex items-center gap-1 cursor-pointer">
+                                    <i class="fa-solid ${isOutOfStock ? 'fa-rotate-left text-emerald-600' : 'fa-box-archive text-amber-500'}"></i>
+                                    ${isOutOfStock ? 'تفعيل مجدداً' : 'تعليم كـ (نفذ / اكتمل)'}
+                                </button>
+                                <button onclick="deleteItem(${item.id})" class="text-rose-500 hover:text-rose-700 transition font-medium flex items-center gap-1 cursor-pointer">
+                                    <i class="fa-solid fa-trash-can"></i> إلغاء / حذف الطلب
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            updateStats();
+        }
+
+        // استقبال النموذج وحفظ البيانات
+        window.handleFormSubmit = function(event) {
+            event.preventDefault();
+
+            const type = document.querySelector('input[name="itemType"]:checked').value;
+            const title = document.getElementById('title').value;
+            const stage = document.getElementById('stage').value;
+            const category = document.getElementById('category').value;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const condition = document.getElementById('condition').value;
+            const contact = document.getElementById('contact').value;
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                stage,
+                category,
+                price,
+                condition,
+                type,
+                contact,
+                isOutOfStock: false
+            };
+
+            items.unshift(newItem);
+            localStorage.setItem('ecoschool_items', JSON.stringify(items)); // حفظ في المتصفح
+            renderItems();
+            closeModal();
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            // احتساب التوفير فقط للقطع التبرعية المتاحة (غير المنفذة)
+            const totalSavings = items
+                .filter(i => i.type === 'supply' && !i.isOutOfStock)
+                .reduce((sum, i) => sum + i.price, 0);
+            
+            document.getElementById('total-savings').innerText = totalSavings.toLocaleString() + ' ج.م';
+
+            const totalItemsCount = items.filter(i => i.type === 'supply' && !i.isOutOfStock).length;
+            document.getElementById('total-items').innerText = totalItemsCount + ' أداة';
+
+            const supplies = items.filter(i => i.type === 'supply' && !i.isOutOfStock).length;
+            const demands = items.filter(i => i.type === 'demand' && !i.isOutOfStock).length;
+            const totalRequests = supplies + demands;
+            const matchRate = totalRequests > 0 ? Math.round((supplies / totalRequests) * 100) : 0;
+            document.getElementById('total-match-rate').innerText = matchRate + '%';
+
+            updateStageProgress('primary');
+            updateStageProgress('prep');
+            updateStageProgress('secondary');
+        }
+
+        function updateStageProgress(stageKey) {
+            const stageItems = items.filter(i => i.stage === stageKey && !i.isOutOfStock);
+            const stageSupplies = stageItems.filter(i => i.type === 'supply').length;
+            const stageDemands = stageItems.filter(i => i.type === 'demand').length;
+            const totalStage = stageSupplies + stageDemands;
+
+            const percentage = totalStage > 0 ? Math.min(100, Math.round((stageSupplies / (stageDemands || 1)) * 100)) : 0;
+
+            const progressBar = document.getElementById(`progress-${stageKey}`);
+            const label = document.getElementById(`label-${stageKey}`);
+
+            if (progressBar) progressBar.style.width = `${Math.min(percentage, 100)}%`;
+            if (label) label.innerText = `${Math.min(percentage, 100)}% (${stageSupplies} متوفر / ${stageDemands} مطلوب)`;
+        }
+
+        // تشغيل العرض عند تحميل الصفحة
+        window.onload = function() {
+            renderItems();
+        };
+    </script>
+</body>
+</html>
